@@ -21,12 +21,28 @@ def readInput():
     return data
 
 def a():
-    rows = [n for n in readInput().split('\n')]
+    intcodeprg = [int(n) for n in readInput().split(',')]
     totsum = 0
-    for row in rows:
-        print("row: ", row)
-
-    print("A): ", totsum)
+    pos = 0    
+    intcodeprg[1] = 12
+    intcodeprg[2] = 2
+    
+    while intcodeprg[pos] != 99:
+        #print("po: ", intcodeprg[pos])
+        cmd = intcodeprg[pos]
+        a = intcodeprg[intcodeprg[pos+1]]
+        b = intcodeprg[intcodeprg[pos+2]]
+        c = intcodeprg[pos+3]
+        print("", a, b, c)
+        if cmd == 1:
+            print("1wtf", cmd)
+            intcodeprg[c] = a + b
+        if cmd == 2:
+            print("2wtf", cmd)
+            intcodeprg[c] = (a*b)
+        pos += 4
+        print("", intcodeprg)
+    print("A): ", intcodeprg[0])
 
 def b():
     rows = [n for n in readInput().split('\n')]
@@ -37,5 +53,5 @@ def b():
 # Main body
 if __name__ == '__main__':
     a()
-    b()
+    #Sb()
     sys.exit(1)
