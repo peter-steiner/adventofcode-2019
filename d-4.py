@@ -35,6 +35,23 @@ def solvePw(pwStr):
         valid = False
     return valid
 
+def solvePwB(pwStr):
+    pw = [int(c) for c in pwStr]
+    valid = True
+    adjacent = -1
+    repeat = 0
+    for i in range(len(pw)-1):
+        if pw[i] > pw[i+1]:
+            valid = False
+            break
+        if pw[i] == pw[i+1]:
+            adjacent = pw[i]
+            if 
+
+    if adjacent < 0:
+        valid = False
+    return valid
+
 
 def a():
     smooochy_pws = [n for n in readInput().split('\n')]        
@@ -53,17 +70,17 @@ def b():
     nmb_pws = 0
 
     for pw in smooochy_pws:
-        print("\n#########", pw, solvePw(pw))
+        print("\n#########", pw, solvePwB(pw))
     
-    for pw in range(372037, 905157+1):
-        if solvePw(str(pw)):
-            nmb_pws += 1
-            print("\n#########", pw)
+    # for pw in range(372037, 905157+1):
+    #     if solvePwB(str(pw)):
+    #         nmb_pws += 1
+    #         print("\n#########", pw)
 
 
     print("AB): ", nmb_pws)
 # Main body
 if __name__ == '__main__':
-    a()
-    #b()
+    #a()
+    b()
     sys.exit(1)
