@@ -46,6 +46,7 @@ def solvePwB(pwStr):
             break
         if pw[i] == pw[i+1]:
             adjacent = pw[i]
+            ## räkna antal av numret
             if 
 
     if adjacent < 0:
