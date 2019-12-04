@@ -39,49 +39,40 @@ def solvePwB(pwStr):
     pw = [int(c) for c in pwStr]
     valid = True
     adjacent = -1
+
     repeat = 0
     for i in range(len(pw)-1):
         if pw[i] > pw[i+1]:
             valid = False
-            break
         if pw[i] == pw[i+1]:
+          c = pw.count(pw[i])
+          pair_mod = pw.count(pw[i])%2
+          if (pair_mod == 0 and c == 2):
             adjacent = pw[i]
-            ## räkna antal av numret
-            if 
 
     if adjacent < 0:
-        valid = False
+      valid = False
+
     return valid
 
 
 def a():
-    smooochy_pws = [n for n in readInput().split('\n')]        
-    #print("", smooochy_pws)
-    nmb_pws = 0
-    
+    nmb_pws = 0    
     for pw in range(372037, 905157+1):
         if solvePw(str(pw)):
             nmb_pws += 1
-            #print("\n#########", pw)
     print("A): ", nmb_pws)
 
 def b():
-    smooochy_pws = [n for n in readInput().split('\n')]        
-    print("", smooochy_pws)
-    nmb_pws = 0
+    nmb_pws = 0    
+    for pw in range(372037, 905157+1):
+        if solvePwB(str(pw)):
+            nmb_pws += 1
 
-    for pw in smooochy_pws:
-        print("\n#########", pw, solvePwB(pw))
-    
-    # for pw in range(372037, 905157+1):
-    #     if solvePwB(str(pw)):
-    #         nmb_pws += 1
-    #         print("\n#########", pw)
+    print("B): ", nmb_pws)
 
-
-    print("AB): ", nmb_pws)
 # Main body
 if __name__ == '__main__':
-    #a()
+    a()
     b()
     sys.exit(1)
