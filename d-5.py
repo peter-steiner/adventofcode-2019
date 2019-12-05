@@ -54,7 +54,7 @@ def processInstruction(input, instruction):
 
       # INPUT/OUTPUT
       if (OP == 3 or OP == 4):
-        print(instruction[pos:pos+2])
+        # print(instruction[pos:pos+2])
         if OP == 4:
           input = getValue(C, pos+1, instruction)
         if OP == 3:
@@ -73,13 +73,8 @@ def processInstructionConditioner(input, instruction):
           cmd[i] = cmd_tmp[i]
       cmd = cmd[::-1]
       op = 0
-      # Hantera 
-      # ABCDE
-      #  1002
       OP, C, B, A = 10*cmd[3] + cmd[4], cmd[2], cmd[1], cmd[0]
-      # print(OP, C, B, A, cmd)
 
-      # MATH OPS
       if (OP == 1 or OP == 2):        
         print("handle op 1|2", op)
         print(instruction[pos:pos+4])
@@ -109,13 +104,32 @@ def processInstructionConditioner(input, instruction):
           instruction[val_pos] = input
         ## do operations
         pos += 2
-      print(" ")
 
-      # print("Handle next pos", pos)
-      # print("Validate:", instruction[0])
-      # break
-      ########
-      # time.sleep( 2 )
+      if (OP > 4 and OP < 9):
+        first_param = getValue(C, pos+1, instruction)
+        second_param  = getValue(B, pos+2, instruction)
+        third_param = getValue(A, pos+3, instruction)
+        if OP == 5:
+          if val != 0:
+            pos = second_param
+          else: 
+            pos += 3    
+        if OP == 6:
+          if val == 0:
+            pos = second_param
+          else: 
+            pos += 3        
+        if OP == 7:
+          val_store = 0
+          if first_param < second_param:
+            val_store = 1
+          instruction[third_param] = val_store
+        if OP == 8:
+          val_store = 0
+          if first_param == second_param:
+            val_store = 1
+          instruction[third_param] = val_store
+          
     return input
 
 def test():
@@ -134,18 +148,21 @@ def test():
 def a():
     instructions = [int(n) for n in readInput().split(',')]        
     input = 1
-    print("#########\n", instructions)
     answ = processInstruction(input, instructions)
 
     print("A): ", answ)
 
 def b():
-    inp = [int(n) for n in readInput().split(',')]        
-    print("B): ")
+    instructions = [int(n) for n in readInput().split(',')]        
+    input = 1
+    print("#########\n", instructions)
+    answ = processInstructionConditioner(input, instructions)     
+    
+    print("B): ", answ)
 
 # Main body
 if __name__ == '__main__':
     # test()
-    a()
-    # b()
+    # a()
+    b()
     sys.exit(1)
