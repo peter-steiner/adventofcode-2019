@@ -9,6 +9,7 @@ import sys
 import os
 import re
 import math
+import time
 
 # Global variables
 # task="d-5.test"
@@ -21,46 +22,85 @@ def readInput():
     file.close()
     return data
 
-def getOutput(instruction):
+def getValue(mode, pos, instruction):
+  val = instruction[pos]
+  if mode == 0:
+    return instruction[val]
+  return val
+
+def processInstruction(input, instruction):
     pos = 0
-    input = 1
     while instruction[pos] != 99:
-        cmd = [int(d) for d in str(instruction[pos])]
+      cmd_tmp = [int(d) for d in str(instruction[pos])][::-1]
+      cmd = [0,0,0,0,0]
+      for i in range(len(cmd_tmp)): 
+          cmd[i] = cmd_tmp[i]
+      cmd = cmd[::-1]
+      op = 0
+      # Hantera 
+      # ABCDE
+      #  1002
+      OP, C, B, A = 10*cmd[3] + cmd[4], cmd[2], cmd[1], cmd[0]
+      # print(OP, C, B, A, cmd)
 
-        # Hantera 
-        # ABCDE
-        #  1002
-        if len(cmd) > 1:
-            A = 0
-            l = len(cmd)
-            if l > 4:
-                print("CMD > 4", cmd)
-                A = cmd[0] 
-            DE, C, B = cmd[l], cmd[l-2], cmd[l-3]
-            print(DE, C, B, A)
+      # MATH OPS
+      if (OP == 1 or OP == 2):        
+        print("handle op 1|2", op)
+        print(instruction[pos:pos+4])
+        a = getValue(C, pos+1, instruction)
+        b = getValue(B, pos+2, instruction)
+        c = instruction[pos+3]
+        if OP == 1:
+          print("a + b @ c", a, b, c)
+          instruction[c] = a + b
+        if OP == 2:
+          print("a X b @ c", a, b, c)
+          instruction[c] = (a*b)
+        print("new value at", c, instruction[c])
+        pos += 4
 
-        #day2
-        ########
-        if (len(cmd) == 1 and cmd == 1 or cmd == 2):        
-            a = instruction[instruction[pos+1]]
-            b = instruction[instruction[pos+2]]
-            c = instruction[pos+3]
-            if cmd == 1:
-                instruction[c] = a + b
-            if cmd == 2:
-                instruction[c] = (a*b)
-            ########
+      # INPUT/OUTPUT
+      if (OP == 3 or OP == 4):
+        print("handle op 3|4", OP)
+        print(instruction[pos:pos+2])
+        if OP == 4:
+          input = getValue(C, pos+1, instruction)
+          print("######################################\noutput", input)
+          # if input > 0:
+            # break
+        if OP == 3:
+          val_pos = instruction[pos+1]
+          instruction[val_pos] = input
+        ## do operations
+        pos += 2
+      print(" ")
 
-      pos += (len(cmd) + 1)
-      # print("", intcodeprg)
-    return instruction[0]
+      # print("Handle next pos", pos)
+      # print("Validate:", instruction[0])
+      # break
+      ########
+      # time.sleep( 2 )
+    return input
+
+def test():
+    
+    # instructions = ["1002,4,3,4,33,99", "3,2,99", "3,1,4,0,99"]
+    instructions = ["3,2,99"]
+    input = 99
+    for ins in instructions:
+      print("#########", ins)
+      print(ins.split(','))
+      answ = processInstruction(input, [int(c) for c in ins.split(',')])
+      time.sleep( 2 )
+
+    print("A): ", answ)
 
 def a():
-    intcodeprg = [int(n) for n in readInput().split(',')]        
-    intcodeprg[1] = 12
-    intcodeprg[2] = 2
-    
-    answ = getOutput(intcodeprg)
+    instructions = [int(n) for n in readInput().split(',')]        
+    input = 1
+    print("#########\n", instructions)
+    answ = processInstruction(input, instructions)
+
     print("A): ", answ)
 
 def b():
@@ -69,6 +109,7 @@ def b():
 
 # Main body
 if __name__ == '__main__':
+    # test()
     a()
-    b()
+    # b()
     sys.exit(1)
