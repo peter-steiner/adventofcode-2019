@@ -74,62 +74,58 @@ def processInstructionConditioner(input, instruction):
       cmd = cmd[::-1]
       op = 0
       OP, C, B, A = 10*cmd[3] + cmd[4], cmd[2], cmd[1], cmd[0]
-
       if (OP == 1 or OP == 2):        
-        print("handle op 1|2", op)
-        print(instruction[pos:pos+4])
+        # print("handle OP 1|2", OP)
+        # print(instruction[pos:pos+4])
         a = getValue(C, pos+1, instruction)
         b = getValue(B, pos+2, instruction)
         c = instruction[pos+3]
         if OP == 1:
-          print("a + b @ c", a, b, c)
+          # print("a + b @ c", a, b, c)
           instruction[c] = a + b
         if OP == 2:
-          print("a X b @ c", a, b, c)
+          # print("a X b @ c", a, b, c)
           instruction[c] = (a*b)
-        print("new value at", c, instruction[c])
+        # print("new value at", c, instruction[c])
         pos += 4
 
       # INPUT/OUTPUT
       if (OP == 3 or OP == 4):
-        print("handle op 3|4", OP)
-        print(instruction[pos:pos+2])
         if OP == 4:
           input = getValue(C, pos+1, instruction)
-          print("######################################\noutput", input)
-          # if input > 0:
-            # break
         if OP == 3:
           val_pos = instruction[pos+1]
           instruction[val_pos] = input
-        ## do operations
         pos += 2
-
+      
       if (OP > 4 and OP < 9):
         first_param = getValue(C, pos+1, instruction)
         second_param  = getValue(B, pos+2, instruction)
-        third_param = getValue(A, pos+3, instruction)
         if OP == 5:
-          if val != 0:
+          if first_param != 0:
             pos = second_param
           else: 
             pos += 3    
         if OP == 6:
-          if val == 0:
+          if first_param == 0:
             pos = second_param
           else: 
-            pos += 3        
+            pos += 3 
         if OP == 7:
+          third_param = instruction[pos+3]
           val_store = 0
           if first_param < second_param:
             val_store = 1
           instruction[third_param] = val_store
+          pos +=4
         if OP == 8:
+          third_param = instruction[pos+3]
           val_store = 0
           if first_param == second_param:
             val_store = 1
           instruction[third_param] = val_store
-          
+          pos +=4
+        
     return input
 
 def test():
@@ -154,8 +150,7 @@ def a():
 
 def b():
     instructions = [int(n) for n in readInput().split(',')]        
-    input = 1
-    print("#########\n", instructions)
+    input = 5
     answ = processInstructionConditioner(input, instructions)     
     
     print("B): ", answ)
@@ -163,6 +158,6 @@ def b():
 # Main body
 if __name__ == '__main__':
     # test()
-    # a()
+    a()
     b()
     sys.exit(1)
