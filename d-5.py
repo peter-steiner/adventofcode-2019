@@ -41,6 +41,42 @@ def processInstruction(input, instruction):
       # ABCDE
       #  1002
       OP, C, B, A = 10*cmd[3] + cmd[4], cmd[2], cmd[1], cmd[0]
+
+      if (OP == 1 or OP == 2):        
+        a = getValue(C, pos+1, instruction)
+        b = getValue(B, pos+2, instruction)
+        c = instruction[pos+3]
+        if OP == 1:
+          instruction[c] = a + b
+        if OP == 2:
+          instruction[c] = (a*b)
+        pos += 4
+
+      # INPUT/OUTPUT
+      if (OP == 3 or OP == 4):
+        print(instruction[pos:pos+2])
+        if OP == 4:
+          input = getValue(C, pos+1, instruction)
+        if OP == 3:
+          val_pos = instruction[pos+1]
+          instruction[val_pos] = input
+        ## do operations
+        pos += 2
+    return input
+
+def processInstructionConditioner(input, instruction):
+    pos = 0
+    while instruction[pos] != 99:
+      cmd_tmp = [int(d) for d in str(instruction[pos])][::-1]
+      cmd = [0,0,0,0,0]
+      for i in range(len(cmd_tmp)): 
+          cmd[i] = cmd_tmp[i]
+      cmd = cmd[::-1]
+      op = 0
+      # Hantera 
+      # ABCDE
+      #  1002
+      OP, C, B, A = 10*cmd[3] + cmd[4], cmd[2], cmd[1], cmd[0]
       # print(OP, C, B, A, cmd)
 
       # MATH OPS
