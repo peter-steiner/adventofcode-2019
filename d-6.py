@@ -50,19 +50,33 @@ def a():
 
     count = 0
     for orbit_path in orbit_paths:
-#      print(orbit_path)
       count += len(orbit_path)
 
-    print("A): orbits", count)
+    YOU = []
+    SAN = []
+    for path in orbit_paths:
+      YOU_ = [s for s in path if "YOU" in s]
+      SAN_ = [s for s in path if "SAN" in s]
+      if len(YOU_) > 0:
+        YOU = path
+      if len(SAN_) > 0:
+        SAN = path 
 
-def b():
-    instructions = [n for n in readInput().split(',')]        
-    answ = ""    
-    print("B): ", answ)
+    #print("You", YOU)
+    #print("San", SAN)
+
+    diff1 = list(set(YOU) - set(SAN))
+    diff2 = list(set(SAN) - set(YOU))
+    print(diff1, len(diff1))
+    print(diff2, len(diff2))
+
+    orbital_transfers = len(diff1)-1 + len(diff2)-1
+    print("A): orbits", count)
+    print("B): orbital_transfers", orbital_transfers)
+
 
 # Main body
 if __name__ == '__main__':
     # test()
     a()
-    # b()
     sys.exit(1)
