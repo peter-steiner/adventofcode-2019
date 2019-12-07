@@ -13,8 +13,8 @@ import time
 import itertools
 
 # Global variables
-task="d-7.test"
-#task="d-7"
+#task="d-7.test"
+task="d-7"
 infile=task + ".input"
 
 def readInput():
@@ -31,6 +31,8 @@ def getValue(mode, pos, instruction):
 
 def amp(input, instruction):
     pos = 0
+    #print("Amp phases: ", input)
+    input_index = 0
     while instruction[pos] != 99:
       cmd_tmp = [int(d) for d in str(instruction[pos])][::-1]
       cmd = [0,0,0,0,0]
@@ -54,13 +56,16 @@ def amp(input, instruction):
         # print("new value at", c, instruction[c])
         pos += 4
 
+
       # INPUT/OUTPUT
       if (OP == 3 or OP == 4):
         if OP == 4:
-          input = getValue(C, pos+1, instruction)
+          input.append(getValue(C, pos+1, instruction))
+          return input
         if OP == 3:
           val_pos = instruction[pos+1]
-          instruction[val_pos] = input
+          instruction[val_pos] = input[input_index]
+          input_index += 1
         pos += 2
       
       if (OP > 4 and OP < 9):
@@ -94,19 +99,23 @@ def amp(input, instruction):
     return input
 
 def calc_thruster_power(phase_setting_sequences, instruction):
-  print("#########\n", instruction)
+  maxAmp = 0
+  amps = ["A", "B", "C", "D", "E"]
+  for ph in phase_setting_sequences:
+    phase_setting = [ph[0],0]
+    thruster_power = amp(phase_setting, instruction.copy())
+    for i in range(1, 5):
+      thruster_power = amp([ph[i], thruster_power[-1]], instruction.copy())
+      if thruster_power[-1] > maxAmp:
+        maxAmp = thruster_power[-1]
 
-  phase_setting = [1,0]
-  thruster_power = amp(phase_setting, instruction)
-  time.sleep( 2 )
-
-  return thruster_power
+  return maxAmp
   
 def test():
     
     phase_setting_sequences = list(itertools.permutations([i for i in range(5)]))
 
-    # instructions = ["1002,4,3,4,33,99", "3,2,99", "3,1,4,0,99"]
+#    instructions = ["3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0"]
     instructions = ["3,15,3,16,1002,16,10,16,1,16,15,15,4,15,99,0,0","3,23,3,24,1002,24,10,24,1002,23,-1,23,101,5,23,23,1,24,23,23,4,23,99,0,0","3,31,3,32,1002,32,10,32,1001,31,-2,31,1007,31,0,33,1002,33,7,33,1,33,31,31,1,32,31,31,4,31,99,0,0,0"]
     for ins in instructions:
       instruction = [int(c) for c in ins.split(',')]
@@ -115,12 +124,15 @@ def test():
 
 
 def a():
-    orbits = [n for n in readInput().split('\n')]    
-    print("A): orbits", count)
+  phase_setting_sequences = list(itertools.permutations([i for i in range(5)]))
+  instruction = [int(n) for n in readInput().split(',')]    
+  thruster_power = calc_thruster_power(phase_setting_sequences, instruction)
+  
+  print("A): Thruster power", thruster_power)
 
 
 # Main body
 if __name__ == '__main__':
     test()
-    #a()
+    a()
     sys.exit(1)
