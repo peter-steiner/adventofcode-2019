@@ -104,7 +104,8 @@ def calc_thruster_power(phase_setting_sequences, instruction):
         maxAmp = thruster_power[-1]
         
   return maxAmp
-  
+
+
 def test():
     
     phase_setting_sequences = list(itertools.permutations([i for i in range(5)]))
