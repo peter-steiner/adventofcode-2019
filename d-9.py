@@ -93,8 +93,8 @@ def amp(amplifier_state):
           output = getValue(C, amplifier_state, pos+1, instruction)
           amplifier_state.output = output
           input = output
-          print("##########\nOutput: ", output)
-          print("##########")
+          #print("##########\nOutput: ", output)
+          #print("##########")
         if OP == 3:
 #          print("OP 3 pos:{} inp:{}".format(pos, input))
           instruction[amplifier_state.rel_base + instruction[pos+1]] = input
@@ -155,7 +155,7 @@ def a():
   amp_state = AmpState("A", 0, 1, instruction.copy(), input,  0)
   amp(amp_state)
 
-  print("a): Thruster power", amp_state.output)
+  print("a): BOOST keycode", amp_state.output)
 
 def b():
   instruction = [int(n) for n in readInput().split(',')]
@@ -163,7 +163,7 @@ def b():
   amp_state = AmpState("A", 0, 1, instruction.copy(), input,  0)
   amp(amp_state)
 
-  print("a): Thruster power", amp_state.output)
+  print("b): Distress signal", amp_state.output)
 
 # Main body
 if __name__ == '__main__':
