@@ -169,5 +169,5 @@ def b():
 if __name__ == '__main__':
     # test()
     a()
-    #b()
+    b()
     sys.exit(1)
