@@ -15,10 +15,10 @@ import itertools
 # Global variables
 #task="d-10.test"
 task="d-10"
-infile=task + ".input"
+infile=task
 
-def readInput():
-    with open('input/' + infile) as file:
+def readInput(test):
+    with open('input/' + infile + test + '.input') as file:
         data = file.read()
     file.close()
     return data
@@ -27,10 +27,37 @@ def readInput():
 def test():
   print("Test run")
 
-def a():
-  instruction = [int(n) for n in readInput().split(',')]
+def readSpace(rows):
 
-  print("A): ", instruction)
+  space = []
+  for row in rows:
+    r = []
+    for c in row:
+      if  c == '#':
+        r.append(1)
+      else: 
+        r.append(0)
+    space.append(r)
+
+  return space
+
+# x, y
+def getLimits(space):
+  return [len(space[0])-1, len(space)-1]
+
+def printSpace(space):
+  for room in space:
+    print(room)
+
+def a():
+  rows = [n for n in readInput(".test").split('\n')]
+
+  space = readSpace(rows)
+  printSpace(space)
+  limits = getLimits(space)
+
+
+  print("A): ")
 
 def b():
   instruction = [int(n) for n in readInput().split(',')]
@@ -41,5 +68,5 @@ def b():
 if __name__ == '__main__':
     # test()
     a()
-    b()
+    # b()
     sys.exit(1)
