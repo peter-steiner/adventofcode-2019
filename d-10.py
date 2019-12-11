@@ -49,6 +49,13 @@ def printSpace(space):
   for room in space:
     print(room)
 
+def validPoint(point, limits):
+  x, y = point
+  if x >= 0 and x <= limits[0]:
+    return True
+  if y >= 0 and y <= limits[1]:
+    return False
+
 def a():
   rows = [n for n in readInput(".test").split('\n')]
 
